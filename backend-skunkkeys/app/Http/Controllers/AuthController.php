@@ -82,4 +82,57 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Cuenta verificada correctamente']);
     }
+
+    //Olvidar contraseña
+    public function forgotPassword(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+
+        $resetCode = Str::random(6);
+        $user->reset_code = $resetCode;
+        $user->reset_expires_at = now()->addMinutes(15); // Código válido por 15 minutos
+        $user->save();
+
+        Mail::raw("Tu código para recuperar tu contraseña es: $resetCode", function ($message) use ($user) {
+            $message->to($user->email)
+                ->subject('Código de recuperación - Skunk Keys');
+        });
+
+        return response()->json(['message' => 'Código de recuperación enviado al correo']);
+    }
+
+    //Reiniciar contraseña con el codigo enviado
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'code' => 'required|string',
+            'new_password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $user = User::where('email', $request->email)
+            ->where('reset_code', $request->code)
+            ->first();
+
+        if (!$user) {
+            return response()->json(['error' => 'Código inválido'], 400);
+        }
+
+        if (!$user->reset_expires_at || now()->greaterThan($user->reset_expires_at)) {
+            return response()->json(['error' => 'El código ha expirado'], 400);
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->reset_code = null;
+        $user->reset_expires_at = null;
+        $user->save();
+
+        return response()->json(['message' => 'Contraseña actualizada correctamente']);
+    }
 }
