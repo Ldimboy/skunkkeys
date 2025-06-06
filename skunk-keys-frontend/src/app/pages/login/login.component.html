@@ -1,0 +1,34 @@
+<div class="container mt-5" style="max-width: 400px;">
+    <h2 class="mb-4 text-center">Iniciar sesión</h2>
+
+    <form (ngSubmit)="login()" #form="ngForm" novalidate>
+        <div class="form-group mb-3">
+            <label for="username" class="form-label">Nombre de usuario</label>
+            <input type="text" id="username" name="username" class="form-control" [(ngModel)]="username" required />
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <div class="input-group">
+                <input [type]="showPassword ? 'text' : 'password'" id="password" name="password" class="form-control"
+                    [(ngModel)]="password" required />
+                <button class="btn btn-outline-secondary" type="button" (click)="togglePassword()">
+                    <i class="fa" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                </button>
+            </div>
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100" [disabled]="!form.valid">
+            Iniciar sesión
+        </button>
+
+        <div class="text-center mt-3">
+            <a routerLink="/register">¿No tienes cuenta? Regístrate</a><br />
+            <a routerLink="/reset-password">¿Olvidaste tu contraseña?</a>
+        </div>
+    </form>
+</div>

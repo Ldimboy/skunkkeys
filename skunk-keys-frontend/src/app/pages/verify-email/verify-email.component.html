@@ -1,0 +1,33 @@
+<div class="container mt-5" style="max-width: 500px;">
+  <h2 class="mb-4 text-center">Verifica tu cuenta</h2>
+
+  <div class="alert alert-info">
+    Te hemos enviado un código al correo <strong>{{ email }}</strong>.
+    Introdúcelo para activar tu cuenta.
+  </div>
+
+  <form (ngSubmit)="verifyCode()" #form="ngForm">
+    <div class="form-group mb-3">
+      <label for="code" class="form-label">Código de verificación</label>
+      <input
+        type="text"
+        id="code"
+        name="code"
+        class="form-control"
+        [(ngModel)]="code"
+        required
+      />
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100" [disabled]="!form.valid">
+      Verificar
+    </button>
+  </form>
+</div>

@@ -1,0 +1,44 @@
+
+<header class="d-flex justify-content-between align-items-center p-3 bg-light shadow-sm">
+    <h1 class="m-0">🔐 Skunk Keys</h1>
+    <a class="btn btn-primary" routerLink="/login">
+        <i class="fa fa-sign-in me-1"></i> Iniciar sesión
+    </a>
+</header>
+
+<main class="container my-5">
+    <div class="row align-items-center">
+       
+        <div class="col-md-6 mb-4">
+            <h2>Gestiona tus contraseñas y notas personales con seguridad</h2>
+            <p>Skunk Keys es una aplicación moderna para almacenar y proteger tus datos importantes, accesible desde
+                cualquier dispositivo.</p>
+        </div>
+
+        
+        <div class="col-md-6 text-center">
+            <h4 class="mb-3">Generador de contraseñas seguras</h4>
+            <div class="input-group mb-2">
+                <input type="text" class="form-control text-center" [value]="generatedPassword" readonly>
+                <button class="btn btn-outline-secondary" (click)="generatePassword()">
+                    <i class="fa fa-refresh"></i>
+                </button>
+            </div>
+            <button class="btn btn-sm btn-outline-success" (click)="copyPassword()">
+                <i class="fa fa-clipboard"></i> Copiar
+            </button>
+        </div>
+    </div>
+</main>
+
+
+<footer class="text-center bg-dark text-white py-3 mt-5">
+    <p class="mb-1">&copy; 2025 Skunk Keys</p>
+    <div>
+        <a href="https://github.com/tuusuario" target="_blank" class="text-white me-3"><i class="fa fa-github"></i></a>
+        <a href="https://linkedin.com/in/tuusuario" target="_blank" class="text-white me-3"><i
+                class="fa fa-linkedin"></i></a>
+        <a href="mailto:tuemail@example.com" class="text-white me-3"><i class="fa fa-envelope"></i></a>
+        <a href="https://infojobs.net" target="_blank" class="text-white"><i class="fa fa-briefcase"></i></a>
+    </div>
+</footer>

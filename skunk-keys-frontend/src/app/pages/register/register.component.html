@@ -1,0 +1,48 @@
+<div class="container mt-5" style="max-width: 500px;">
+    <h2 class="mb-4 text-center">Crear cuenta</h2>
+
+    <form (ngSubmit)="register()" #registerForm="ngForm" novalidate>
+        <!-- Usuario -->
+        <div class="mb-3">
+            <label for="username" class="form-label">Nombre de usuario</label>
+            <input type="text" id="username" name="username" class="form-control" [(ngModel)]="username" required />
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label for="email" class="form-label">Correo electrónico</label>
+            <input type="email" id="email" name="email" class="form-control" [(ngModel)]="email" required />
+        </div>
+
+        <!-- Contraseña -->
+        <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" id="password" name="password" class="form-control" [(ngModel)]="password" required />
+        </div>
+
+        <!-- Confirmar contraseña -->
+        <div class="mb-3">
+            <label for="password_confirmation" class="form-label">Confirmar contraseña</label>
+            <input type="password" id="password_confirmation" name="password_confirmation" class="form-control"
+                [(ngModel)]="password_confirmation" required />
+        </div>
+
+        <!-- Mensaje de error -->
+        <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+        </div>
+
+        <!-- Mensaje de éxito -->
+        <div *ngIf="successMessage" class="alert alert-success">
+            {{ successMessage }}
+        </div>
+
+        <button type="submit" class="btn btn-success w-100" [disabled]="!registerForm.valid">
+            Registrarse
+        </button>
+    </form>
+
+    <div class="text-center mt-3">
+        <a routerLink="/login">¿Ya tienes cuenta? Inicia sesión</a>
+    </div>
+</div>
