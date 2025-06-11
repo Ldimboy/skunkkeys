@@ -44,7 +44,7 @@ class AuthController extends Controller
             'verification_code' => $verificationCode,
         ]);
 
-        // Enviar correo sin blade, sin mailable, texto plano
+        // Enviar correo texto plano
         Mail::raw("Gracias por registrarte en Skunk Keys.\n\nTu código de verificación es: $verificationCode", function ($message) use ($user) {
             $message->to($user->email)
                 ->subject('Tu código de verificación - Skunk Keys');
@@ -52,8 +52,6 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Usuario registrado. Verifica tu correo.'
-            // Puedes incluir el código aquí solo en modo desarrollo:
-            // 'verification_code' => $verificationCode
         ], 200);
     }
 

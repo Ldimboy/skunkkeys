@@ -1,0 +1,75 @@
+.register-wrapper {
+  min-height: 100vh;
+  background: url('../../../assets/formbg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.register-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+.glass-card {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(173, 173, 173, 0.2);
+}
+
+.btn-login {
+  background-color: #fff;
+  color: #000;
+  border: none;
+  padding: 12px;
+  border-radius: 25px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-login:hover,
+.btn-login:active {
+  background-color: #000;
+  color: #fff;
+}
+
+.text-center a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.text-center a:hover {
+  color: #bbb;
+  text-decoration: underline;
+}
+
+input.form-control {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  color: white;
+  border-radius: 0;
+}
+
+input.form-control:focus {
+  box-shadow: none;
+  border-color: #fff;
+  background: transparent;
+  color: white;
+}

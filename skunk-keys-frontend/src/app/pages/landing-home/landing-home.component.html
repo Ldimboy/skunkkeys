@@ -1,44 +1,62 @@
+<div class="landing-wrapper">
+    <!-- Topbar -->
+    <header class="topbar">
+        <h1>🔐 Skunk Keys</h1>
+        <a routerLink="/login" class="btn-login">
+            <i class="fa fa-sign-in me-1"></i> Iniciar sesión
+        </a>
+    </header>
 
-<header class="d-flex justify-content-between align-items-center p-3 bg-light shadow-sm">
-    <h1 class="m-0">🔐 Skunk Keys</h1>
-    <a class="btn btn-primary" routerLink="/login">
-        <i class="fa fa-sign-in me-1"></i> Iniciar sesión
-    </a>
-</header>
-
-<main class="container my-5">
-    <div class="row align-items-center">
-       
-        <div class="col-md-6 mb-4">
-            <h2>Gestiona tus contraseñas y notas personales con seguridad</h2>
-            <p>Skunk Keys es una aplicación moderna para almacenar y proteger tus datos importantes, accesible desde
-                cualquier dispositivo.</p>
+    <!-- Hero: Texto + Generador -->
+    <section class="hero-section">
+        <div class="hero-text">
+            <h2>Gestiona tus contraseñas y notas con seguridad</h2>
+            <p>Skunk Keys es una aplicación web destinada a la gestión de contraseñas y notas, las cuales se podrán
+                categorizar en carpetas si el usuario lo desea. Los usuarios podrán almacenar, organizar y gestionar de
+                manera segura tanto contraseñas como notas asociadas a sus servicios y la configuración de la
+                cuenta(Resetear contraseña de la cuenta). Además, la aplicación incluirá un modo administrador para
+                gestionar usuarios(congelar, borrar y resetear contraseña).</p>
         </div>
-
-        
-        <div class="col-md-6 text-center">
-            <h4 class="mb-3">Generador de contraseñas seguras</h4>
+        <div class="generator-box">
+            <h4>Generador de contraseñas</h4>
             <div class="input-group mb-2">
-                <input type="text" class="form-control text-center" [value]="generatedPassword" readonly>
-                <button class="btn btn-outline-secondary" (click)="generatePassword()">
+                <input type="text" class="form-control" [value]="generatedPassword" readonly>
+                <button class="btn btn-outline-light" (click)="generatePassword()">
                     <i class="fa fa-refresh"></i>
                 </button>
             </div>
-            <button class="btn btn-sm btn-outline-success" (click)="copyPassword()">
+            <button class="btn btn-outline-info btn-sm" (click)="copyPassword()">
                 <i class="fa fa-clipboard"></i> Copiar
             </button>
         </div>
-    </div>
-</main>
+    </section>
 
+    <!-- Tarjetas -->
+    <section class="features-section">
+        <div class="feature-card">
+            <i class="fa fa-lock fa-2x mb-2"></i>
+            <h5>Seguridad</h5>
+            <p>Tus datos están cifrados y protegidos</p>
+        </div>
+        <div class="feature-card">
+            <i class="fa fa-paint-brush fa-2x mb-2"></i>
+            <h5>Diseño</h5>
+            <p>Interfaz moderna, simple y elegante</p>
+        </div>
+        <div class="feature-card">
+            <i class="fa fa-mobile fa-2x mb-2"></i>
+            <h5>Comodidad</h5>
+            <p>Accede desde cualquier dispositivo</p>
+        </div>
+    </section>
 
-<footer class="text-center bg-dark text-white py-3 mt-5">
-    <p class="mb-1">&copy; 2025 Skunk Keys</p>
-    <div>
-        <a href="https://github.com/tuusuario" target="_blank" class="text-white me-3"><i class="fa fa-github"></i></a>
-        <a href="https://linkedin.com/in/tuusuario" target="_blank" class="text-white me-3"><i
-                class="fa fa-linkedin"></i></a>
-        <a href="mailto:tuemail@example.com" class="text-white me-3"><i class="fa fa-envelope"></i></a>
-        <a href="https://infojobs.net" target="_blank" class="text-white"><i class="fa fa-briefcase"></i></a>
-    </div>
-</footer>
+    <!-- Footer -->
+    <footer>
+        <p class="mb-1">&copy; 2025 Skunk Keys</p>
+        <div>
+            <a href="#" target="_blank"><i class="fa fa-github"></i></a>
+            <a href="#" target="_blank"><i class="fa fa-linkedin"></i></a>
+            <a href="#"><i class="fa fa-envelope"></i></a>
+        </div>
+    </footer>
+</div>

@@ -24,6 +24,7 @@ export class AuthService {
   }
 
 
+  //Loggin/out
   logout(): void {
     localStorage.removeItem('token');
   }
@@ -32,7 +33,14 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
 
+  //Forgot password
+  resetPasswordRequest(data: { email: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reset-password-request`, data);
+  }
 
+  resetPassword(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reset-password`, data);
+  }
 
 
 }

@@ -1,34 +1,40 @@
-<div class="container mt-5" style="max-width: 400px;">
-    <h2 class="mb-4 text-center">Iniciar sesión</h2>
-
-    <form (ngSubmit)="login()" #form="ngForm" novalidate>
-        <div class="form-group mb-3">
-            <label for="username" class="form-label">Nombre de usuario</label>
-            <input type="text" id="username" name="username" class="form-control" [(ngModel)]="username" required />
+<div class="login-wrapper">
+    <div class="glass-card">
+        <div class="icon-container text-center mb-4">
+            <i class="fa fa-user-circle fa-4x text-white"></i>
         </div>
 
-        <div class="form-group mb-3">
-            <label for="password" class="form-label">Contraseña</label>
-            <div class="input-group">
-                <input [type]="showPassword ? 'text' : 'password'" id="password" name="password" class="form-control"
-                    [(ngModel)]="password" required />
-                <button class="btn btn-outline-secondary" type="button" (click)="togglePassword()">
-                    <i class="fa" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
-                </button>
+        <form (ngSubmit)="login()" #form="ngForm" novalidate>
+            <div class="form-group mb-3">
+                <label for="username" class="form-label text-white">
+                    <i class="fa fa-envelope"></i> Nombre de usuario
+                </label>
+                <input type="text" id="username" name="username" class="form-control" [(ngModel)]="username" required />
             </div>
-        </div>
 
-        <div *ngIf="errorMessage" class="alert alert-danger">
-            {{ errorMessage }}
-        </div>
+            <div class="form-group mb-3">
+                <label for="password" class="form-label text-white">
+                    <i class="fa fa-lock"></i> Contraseña
+                </label>
+                <div class="input-group">
+                    <input [type]="showPassword ? 'text' : 'password'" id="password" name="password"
+                        class="form-control" [(ngModel)]="password" required />
+                    <button class="btn btn-outline-light" type="button" (click)="togglePassword()">
+                        <i class="fa" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                    </button>
+                </div>
+            </div>
 
-        <button type="submit" class="btn btn-primary w-100" [disabled]="!form.valid">
-            Iniciar sesión
-        </button>
+            <div *ngIf="errorMessage" class="alert alert-danger">
+                {{ errorMessage }}
+            </div>
 
-        <div class="text-center mt-3">
-            <a routerLink="/register">¿No tienes cuenta? Regístrate</a><br />
-            <a routerLink="/reset-password">¿Olvidaste tu contraseña?</a>
-        </div>
-    </form>
+            <button type="submit" class="btn btn-login w-100" [disabled]="!form.valid">LOGIN</button>
+
+            <div class="text-center mt-3">
+                <a routerLink="/forgot-password">¿Olvidaste tu contraseña?</a><br />
+                <a routerLink="/register">¿No tienes cuenta? Regístrate</a>
+            </div>
+        </form>
+    </div>
 </div>
