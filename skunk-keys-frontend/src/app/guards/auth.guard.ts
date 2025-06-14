@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
 
     const user = this.authService.getCurrentUser();
 
-    // Usuario inválido o congelado
+    // Usuario inválido o congelado y reenviados al login con "Frozen" Para mensaje definido
     if (!user || user.is_active === false) {
       this.authService.logout();
       this.router.navigate(['/login'], {

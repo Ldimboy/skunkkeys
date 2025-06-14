@@ -1,4 +1,3 @@
-/* Fondo borroso y oscuro */
 .login-wrapper {
     min-height: 100vh;
     background: url('../../../assets/formbg.jpg') no-repeat center center fixed;
@@ -21,7 +20,6 @@
     z-index: 1;
 }
 
-/* Tarjeta translúcida estilo glassmorphism */
 .glass-card {
     position: relative;
     z-index: 2;
@@ -33,7 +31,7 @@
     box-shadow: 0 8px 32px rgba(173, 173, 173, 0.2);
 }
 
-/* Botón login personalizado */
+
 .btn-login {
     background-color: #fff;
     color: #000;
@@ -50,7 +48,6 @@
     color: #fff;
 }
 
-/* Enlaces claros */
 .text-center a {
     color: #fff;
     text-decoration: none;
@@ -63,7 +60,6 @@
     text-decoration: underline;
 }
 
-/* Input transparente */
 input.form-control {
     background: transparent;
     border: none;

@@ -25,7 +25,7 @@ const routes: Routes = [
   { path: 'reset-password', component: ResetPasswordComponent },
 
 
-  // Rutas dashboard
+  // Rutas dashboard protegidas
   {
     path: 'dashboard',
     component: DashboardComponent,

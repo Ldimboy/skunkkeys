@@ -80,7 +80,7 @@ class UserController extends Controller
                 'regex:/[A-Z]/',
                 'regex:/[0-9]/',
                 'regex:/[@$!%*#?&]/',
-                'confirmed' // requiere también el campo `new_password_confirmation`
+                'confirmed' 
             ]
         ]);
 
