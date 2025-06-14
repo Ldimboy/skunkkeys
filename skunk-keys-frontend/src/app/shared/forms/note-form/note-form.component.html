@@ -1,0 +1,35 @@
+<div class="note-form">
+    <h3>
+        {{ mode === 'create' ? 'Crear nueva nota' : mode === 'edit' ? 'Editar nota' : 'Ver nota' }}
+    </h3>
+
+    <div class="form-grid">
+        <div class="left-column">
+            <label for="title">Título</label>
+            <input id="title" type="text" [(ngModel)]="formNote.title" [readonly]="mode === 'view'"
+                placeholder="Título" />
+
+            <label for="folder">Carpeta</label>
+            <select id="folder" [(ngModel)]="formNote.folder_id" [disabled]="mode === 'view'">
+                <option [ngValue]="null">(Sin carpeta)</option>
+                <option *ngFor="let folder of folders" [ngValue]="folder.id">
+                    {{ folder.title }}
+                </option>
+            </select>
+        </div>
+
+        <div class="right-column">
+            <label for="content">Contenido</label>
+            <textarea id="content" [(ngModel)]="formNote.content" [readonly]="mode === 'view'"
+                placeholder="Contenido"></textarea>
+        </div>
+    </div>
+
+    <div class="form-buttons">
+        <button *ngIf="mode === 'create'" (click)="onSave()">Guardar</button>
+        <button *ngIf="mode === 'edit'" (click)="onSave()">Actualizar</button>
+        <button (click)="onCancel()">
+            {{ mode === 'view' ? 'Volver' : 'Cancelar' }}
+        </button>
+    </div>
+</div>

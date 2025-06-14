@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth; 
+
 
 class AuthController extends Controller
 {
@@ -84,6 +86,7 @@ class AuthController extends Controller
         return response()->json(['message' => 'Correo verificado correctamente'], 200);
     }
 
+
     public function login(Request $request)
     {
         $request->validate([
@@ -108,20 +111,22 @@ class AuthController extends Controller
             return response()->json(['message' => 'Cuenta congelada, contacte con el administrador'], 403);
         }
 
-        if (!$token = auth('api')->attempt($credentials)) {
+        if (!auth('api')->attempt($credentials)) {
             return response()->json(['message' => 'Credenciales incorrectas'], 401);
         }
 
+        // Generar token con claims personalizados
+        $customToken = JWTAuth::customClaims([
+            'username' => $user->username,
+            'email' => $user->email,
+            'is_admin' => $user->is_admin,
+            'is_active' => $user->is_active
+        ])->fromUser($user);
+
         return response()->json([
-            'token' => $token,
+            'token' => $customToken,
             'token_type' => 'bearer',
-            'expires_in' => config('jwt.ttl') * 60,
-            'user' => [
-                'id' => $user->id,
-                'username' => $user->username,
-                'email' => $user->email,
-                'is_admin' => $user->is_admin
-            ]
+            'expires_in' => config('jwt.ttl') * 60
         ]);
     }
 
@@ -175,7 +180,7 @@ class AuthController extends Controller
                 'regex:/[A-Z]/',
                 'regex:/[0-9]/',
                 'regex:/[@$!%*#?&]/',
-                'confirmed' // requiere new_password_confirmation
+                'confirmed' // Confirmacion
             ]
         ]);
 

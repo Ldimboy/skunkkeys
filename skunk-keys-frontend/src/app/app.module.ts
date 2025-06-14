@@ -3,8 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
 
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
 
 // Formularios
 import { FormsModule } from '@angular/forms';
@@ -15,6 +16,18 @@ import { VerifyEmailComponent } from './pages/verify-email/verify-email.componen
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { AllItemsComponent } from './pages/dashboard/all-items/all-items.component';
+import { PasswordsComponent } from './pages/dashboard/passwords/passwords.component';
+import { NotesComponent } from './pages/dashboard/notes/notes.component';
+import { ProfileSettingsComponent } from './pages/dashboard/profile-settings/profile-settings.component';
+import { TopbarComponent } from './components/topbar/topbar.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { ItemCardComponent } from './components/item-card/item-card.component';
+import { NoteFormComponent } from './shared/forms/note-form/note-form.component';
+import { PasswordFormComponent } from './shared/forms/password-form/password-form.component';
+import { FoldersComponent } from './pages/dashboard/folders/folders.component';
+
+
 
 @NgModule({
   declarations: [
@@ -26,7 +39,16 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
     DashboardComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-
+    AllItemsComponent,
+    PasswordsComponent,
+    NotesComponent,
+    ProfileSettingsComponent,
+    TopbarComponent,
+    SidebarComponent,
+    ItemCardComponent,
+    NoteFormComponent,
+    PasswordFormComponent,
+    FoldersComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +58,13 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
     FormsModule
 
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

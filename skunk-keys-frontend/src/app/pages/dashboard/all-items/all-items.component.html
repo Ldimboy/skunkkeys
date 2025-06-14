@@ -1,0 +1,75 @@
+<h2>Todos tus elementos</h2>
+
+<!-- Formulario dinámico superior -->
+<div *ngIf="selectedNote || selectedPassword" class="dynamic-form">
+    <h3>Vista previa de {{ selectedType === 'note' ? 'nota' : 'contraseña' }}</h3>
+
+    <!-- Vista de Nota -->
+    <div *ngIf="selectedNote">
+        <p><strong>Título:</strong> {{ selectedNote.title }}</p>
+        <p><strong>Contenido:</strong></p>
+        <pre>{{ selectedNote.content }}</pre>
+    </div>
+
+    <!-- Vista de Contraseña -->
+    <div *ngIf="selectedPassword">
+        <p><strong>Título:</strong> {{ selectedPassword.title }}</p>
+        <p><strong>Usuario:</strong> {{ selectedPassword.username }}</p>
+        <p><strong>Contraseña:</strong> {{ selectedPassword.password }}</p>
+        <p><strong>URL:</strong> {{ selectedPassword.url }}</p>
+        <p><strong>Notas:</strong></p>
+        <pre>{{ selectedPassword.notes }}</pre>
+    </div>
+
+    <button (click)="clearSelection()">Cerrar</button>
+</div>
+
+
+<!-- Botón global de expandir/colapsar -->
+<button (click)="toggleAll()">
+    <i [ngClass]="allExpanded ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'"></i>
+</button>
+
+<!-- Secciones por carpeta -->
+<div *ngFor="let folder of folders">
+    <div class="folder-header" (click)="toggleFolder(folder.id)">
+        <h3>{{ folder.title }}</h3>
+        <span class="toggle-indicator">
+            <i [ngClass]="expandedFolders[folder.id] ? 'fa fa-chevron-down' : 'fa fa-chevron-right'"></i>
+        </span>
+    </div>
+
+    <div class="note-grid" *ngIf="expandedFolders[folder.id]">
+        <!-- Tarjetas de Notas -->
+        <div class="note-card" *ngFor="let note of getNotesByFolder(folder.id)">
+            <div class="note-header" [ngStyle]="{ 'background-color': getRandomColor(note.id) }">
+                <i class="fa fa-sticky-note"></i>
+            </div>
+
+            <div class="note-body">
+                <strong>{{ note.title }}</strong>
+                <div class="note-actions">
+                    <button (click)="viewItem('note', note)" title="Seleccionar">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjetas de Contraseñas -->
+        <div class="note-card" *ngFor="let password of getPasswordsByFolder(folder.id)">
+            <div class="note-header" [ngStyle]="{ 'background-color': getRandomColor(password.id) }">
+                <i class="fa fa-key"></i>
+            </div>
+
+            <div class="note-body">
+                <strong>{{ password.title || '(Sin título)' }}</strong>
+                <div class="note-actions">
+                    <button (click)="viewItem('password', password)" title="Seleccionar">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

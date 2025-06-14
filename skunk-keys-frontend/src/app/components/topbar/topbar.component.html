@@ -1,0 +1,16 @@
+<header class="topbar">
+    <div class="logo">🔐 Skunk Keys</div>
+
+    <div class="profile-wrapper">
+        <button class="profile-btn" (click)="toggleDropdown()">
+            <i class="fa fa-user-circle text-white"></i>
+            <span class="welcome-text">Bienvenido, {{ username }}</span>
+        </button>
+
+        <ul class="dropdown-menu" [class.show]="dropdownOpen">
+            <li (click)="goToProfile()">Perfil</li>
+            <li *ngIf="isAdmin" (click)="goToAdminPanel()">Modo administrador</li>
+            <li (click)="logout()">Cerrar sesión</li>
+        </ul>
+    </div>
+</header>

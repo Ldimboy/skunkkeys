@@ -9,15 +9,37 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { AllItemsComponent } from './pages/dashboard/all-items/all-items.component';
+import { PasswordsComponent } from './pages/dashboard/passwords/passwords.component';
+import { NotesComponent } from './pages/dashboard/notes/notes.component';
+import { ProfileSettingsComponent } from './pages/dashboard/profile-settings/profile-settings.component';
+import { AuthGuard } from './guards/auth.guard';
+import { FoldersComponent } from './pages/dashboard/folders/folders.component';
 
 const routes: Routes = [
   { path: '', component: LandingHomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'verify', component: VerifyEmailComponent },
-  { path: 'dashboard', component: DashboardComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'reset-password', component: ResetPasswordComponent }
+  { path: 'reset-password', component: ResetPasswordComponent },
+
+
+  // Rutas dashboard
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [AuthGuard],
+    children: [
+      { path: '', redirectTo: 'all-items', pathMatch: 'full' },
+      { path: 'folders', component: FoldersComponent },
+      { path: 'all-items', component: AllItemsComponent },
+      { path: 'passwords', component: PasswordsComponent },
+      { path: 'notes', component: NotesComponent },
+      { path: 'profile', component: ProfileSettingsComponent },
+    ]
+  }
+
 ];
 
 
