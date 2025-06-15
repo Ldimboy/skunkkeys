@@ -1,10 +1,10 @@
-<h2>Mi perfil</h2>
-
 <div class="profile-box">
+    <div class="profile-header">
+        <h2>Mi perfil</h2>
+    </div>
+
     <p><strong>Nombre de usuario:</strong> {{ user?.username }}</p>
     <p><strong>Email:</strong> {{ user?.email }}</p>
-    <p><strong>Fecha de creación:</strong> {{ user?.created_at | date: 'medium' }}</p>
-
     <div class="password-line">
         <strong>Contraseña:</strong> ********
         <button (click)="goToPasswordReset()">Cambiar contraseña</button>

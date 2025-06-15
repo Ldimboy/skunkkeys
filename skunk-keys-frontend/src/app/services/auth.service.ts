@@ -61,7 +61,7 @@ export class AuthService {
 
     try {
       const payload = jwtDecode<JwtPayload>(token);
-      console.log('🧩 Token decodificado:', payload); // 👈 AÑADE ESTO
+      console.log('🧩 Token decodificado:', payload); 
       return payload;
     } catch (err) {
       console.error('Error al decodificar el token', err);

@@ -1,26 +1,42 @@
+<!-- Encabezado de sección -->
 <div class="section-header">
   <h2 class="section-title">Tus notas</h2>
-  <button *ngIf="!showForm" class="add-item-btn" (click)="showNoteForm()" title="Añadir nota">
+  <button
+    *ngIf="!showForm"
+    class="add-item-btn"
+    (click)="showNoteForm()"
+    title="Añadir nota">
     <i class="fa fa-plus"></i>
   </button>
 </div>
 
-<app-note-form *ngIf="showForm" [mode]="mode" [formNote]="formNote" [folders]="folders" (save)="saveNote()"
+<!-- Formulario dinámico (crear / editar / ver nota) -->
+<app-note-form
+  *ngIf="showForm"
+  [mode]="mode"
+  [formNote]="formNote"
+  [folders]="folders"
+  (save)="saveNote()"
   (cancel)="resetForm()">
 </app-note-form>
 
+<!-- Botón para expandir o contraer todas las carpetas -->
 <button class="toggle-btn" (click)="toggleAll()">
   <i [ngClass]="allExpanded ? 'fa fa-ellipsis-h' : 'fa fa-ellipsis-v'"></i>
 </button>
 
+<!-- Indicador de carga -->
 <div *ngIf="loading">Cargando notas...</div>
 
-<!-- Notas sin carpeta -->
+<!-- Sección de notas sin carpeta -->
 <div>
   <div class="folder-header" (click)="toggleFolder(0)">
     <h3>
       Sin carpeta
-      <i class="toggle-icon" [ngClass]="expandedFolders[0] ? 'fa fa-chevron-down' : 'fa fa-chevron-right'"></i>
+      <i
+        class="toggle-icon"
+        [ngClass]="expandedFolders[0] ? 'fa fa-chevron-down' : 'fa fa-chevron-right'">
+      </i>
     </h3>
   </div>
 
@@ -29,6 +45,7 @@
       <div class="item-header" [ngStyle]="{ 'background-color': getRandomColor(note.id) }">
         <i class="fa fa-sticky-note"></i>
       </div>
+
       <div class="item-body">
         <strong>{{ note.title }}</strong>
         <div class="item-actions">
@@ -41,12 +58,15 @@
   </div>
 </div>
 
-<!-- Notas por carpeta -->
+<!-- Sección de notas agrupadas por carpeta -->
 <div *ngFor="let folder of folders">
   <div class="folder-header" (click)="toggleFolder(folder.id)">
     <h3>
       {{ folder.title }}
-      <i class="toggle-icon" [ngClass]="expandedFolders[folder.id] ? 'fa fa-chevron-down' : 'fa fa-chevron-right'"></i>
+      <i
+        class="toggle-icon"
+        [ngClass]="expandedFolders[folder.id] ? 'fa fa-chevron-down' : 'fa fa-chevron-right'">
+      </i>
     </h3>
   </div>
 
@@ -55,6 +75,7 @@
       <div class="item-header" [ngStyle]="{ 'background-color': getRandomColor(note.id) }">
         <i class="fa fa-sticky-note"></i>
       </div>
+
       <div class="item-body">
         <strong>{{ note.title }}</strong>
         <div class="item-actions">

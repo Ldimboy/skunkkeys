@@ -10,7 +10,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next)
     {
         if (!auth('api')->user() || !auth('api')->user()->is_admin) {
-            return response()->json(['message' => 'Acceso denegado'], 403);
+            return response()->json(['message' => 'Permisos insuficientes'], 403);
         }
 
         return $next($request);

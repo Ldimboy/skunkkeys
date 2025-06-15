@@ -18,6 +18,7 @@ import { FoldersComponent } from './pages/dashboard/folders/folders.component';
 
 import { AdminUsersComponent } from './pages/admin-users/admin-users.component';
 import { AdminLayoutComponent } from './pages/admin-layout/admin-layout.component';
+import { AdminGuard } from './guards/admin.guard';
 
 const routes: Routes = [
   { path: '', component: LandingHomeComponent },
@@ -46,7 +47,7 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminLayoutComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard,AdminGuard],
     children: [
       { path: '', component: AdminUsersComponent }
     ]

@@ -1,49 +1,69 @@
 .profile-box {
-    background: #1e1e1e;
-    padding: 1.5rem;
-    border-radius: 12px;
-    color: white;
-    max-width: 500px;
-    margin: auto;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  background: #1e1e1e;
+  padding: 1.5rem;
+  border-radius: 12px;
+  color: white;
+  max-width: 500px;
+  margin: auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Nuevo: encabezado con icono + título centrado */
+.profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+.user-icon {
+  font-size: 2rem;
+  color: #888;
 }
 
 .password-line {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .password-line button {
-    padding: 0.3rem 0.8rem;
-    background-color: #444;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 0.3rem 0.8rem;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .password-line button:hover {
-    background-color: #666;
+  background-color: #666;
 }
 
 .profile-actions {
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .profile-actions button {
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    border: none;
-    background-color: #444;
-    color: white;
-    cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  background-color: #444;
+  color: white;
+  cursor: pointer;
 }
 
 .profile-actions button:hover {
-    background-color: #666;
+  background-color: #666;
 }

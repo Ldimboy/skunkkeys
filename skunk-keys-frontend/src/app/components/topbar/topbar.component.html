@@ -1,7 +1,12 @@
-<header class="topbar">
-   
-    <div class="logo">  <img class="logo-img" src="/favicon.png" alt="Skunk Keys Logo" />Skunk Keys</div>
 
+<header class="topbar">
+    <!-- Logo + título -->
+    <div class="logo">
+        <img class="logo-img" src="/favicon.png" alt="Skunk Keys Logo" />
+        Skunk Keys
+    </div>
+
+    <!-- Perfil de usuario y dropdown -->
     <div class="profile-wrapper">
         <button class="profile-btn" (click)="toggleDropdown()">
             <i class="fa fa-user-circle text-white"></i>
@@ -13,7 +18,6 @@
             <li *ngIf="isAdmin" (click)="goToAdminPanel()">
                 {{ isInAdminMode ? 'Volver al modo usuario' : 'Modo administrador' }}
             </li>
-
             <li (click)="logout()">Cerrar sesión</li>
         </ul>
     </div>

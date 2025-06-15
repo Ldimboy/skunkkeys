@@ -9,39 +9,48 @@ import { filter } from 'rxjs/operators';
   templateUrl: './topbar.component.html',
   styleUrl: './topbar.component.css'
 })
+
 export class TopbarComponent implements OnInit {
   dropdownOpen = false;
   username = '';
   isAdmin = false;
   isInAdminMode = false;
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
+    // Obtener el usuario actual
     const user = this.authService.getCurrentUser();
     this.username = user?.username || 'Usuario';
     this.isAdmin = user?.is_admin || false;
 
-    // Escuchar cambios de ruta
+    // Verificar si está en modo admin tras navegación
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: any) => {
         this.isInAdminMode = event.urlAfterRedirects.startsWith('/admin');
       });
 
+    // Verificación inicial al cargar
     const currentUrl = this.router.url;
     this.isInAdminMode = currentUrl.startsWith('/admin');
   }
 
-  toggleDropdown() {
+  // Mostrar/ocultar el menú desplegable
+  toggleDropdown(): void {
     this.dropdownOpen = !this.dropdownOpen;
   }
 
-  goToProfile() {
+  // Ir al perfil
+  goToProfile(): void {
     this.router.navigate(['/dashboard/profile']);
   }
 
-  goToAdminPanel() {
+  // Entrar o salir del modo administrador
+  goToAdminPanel(): void {
     if (this.isInAdminMode) {
       this.router.navigate(['/dashboard']);
     } else {
@@ -49,7 +58,8 @@ export class TopbarComponent implements OnInit {
     }
   }
 
-  logout() {
+  // Cerrar sesión
+  logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
   }

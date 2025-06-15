@@ -10,6 +10,7 @@ import { Folder } from '../../../models/folder.model';
   templateUrl: './notes.component.html',
   styleUrls: ['../../../shared/styles/section-layout.css']
 })
+
 export class NotesComponent implements OnInit {
   notes: Note[] = [];
   folders: Folder[] = [];
@@ -17,7 +18,6 @@ export class NotesComponent implements OnInit {
 
   expandedFolders: Record<number, boolean> = {};
   allExpanded: boolean = true;
-
 
   showForm: boolean = false;
   mode: 'create' | 'edit' | 'view' = 'create';
@@ -27,8 +27,42 @@ export class NotesComponent implements OnInit {
   constructor(
     private noteService: NoteService,
     private folderService: FolderService
-  ) { }
+  ) {}
 
+  ngOnInit(): void {
+    this.loadFolders();
+    this.loadNotes();
+  }
+
+  // Carga todas las notas del usuario
+  loadNotes(): void {
+    this.noteService.getNotes().subscribe({
+      next: (res) => {
+        this.notes = res;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar notas:', err);
+        this.loading = false;
+      }
+    });
+  }
+
+  // Carga las carpetas del usuario
+  loadFolders(): void {
+    this.folderService.getFolders().subscribe({
+      next: (res) => {
+        this.folders = res;
+        res.forEach(folder => this.expandedFolders[folder.id] = true);
+        this.expandedFolders[0] = true;
+      },
+      error: (err) => {
+        console.error('Error al cargar carpetas:', err);
+      }
+    });
+  }
+
+  // Guarda o actualiza una nota dependiendo del modo
   saveNote(): void {
     if (!this.formNote.title?.trim()) return;
 
@@ -52,6 +86,7 @@ export class NotesComponent implements OnInit {
     }
   }
 
+  // Elimina una nota por ID
   deleteNote(noteId: number): void {
     const confirmDelete = confirm('¿Estás seguro de que deseas eliminar esta nota?');
     if (!confirmDelete) return;
@@ -63,12 +98,12 @@ export class NotesComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al eliminar nota:', err);
-        throw err; // permite que el interceptor lo capture por si expira el token JWT
+        throw err; // permite que el interceptor lo capture si expira el JWT
       }
     });
   }
 
-
+  // Visualiza una nota específica
   viewNote(note: Note): void {
     this.noteService.getNote(note.id).subscribe({
       next: (fetched) => {
@@ -79,11 +114,12 @@ export class NotesComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al ver nota:', err);
-        throw err; // Esto permitirá al interceptor redirigir si el JWT ha expirado
+        throw err;
       }
     });
   }
 
+  // Activa el modo edición
   editNote(note: Note): void {
     this.mode = 'edit';
     this.currentNote = note;
@@ -91,6 +127,13 @@ export class NotesComponent implements OnInit {
     this.showForm = true;
   }
 
+  // Activa el formulario para crear una nota nueva
+  showNoteForm(): void {
+    this.mode = 'create';
+    this.showForm = true;
+  }
+
+  // Reinicia el formulario y vuelve al modo creación
   resetForm(): void {
     this.mode = 'create';
     this.formNote = { title: '', content: '', folder_id: null };
@@ -98,51 +141,17 @@ export class NotesComponent implements OnInit {
     this.showForm = false;
   }
 
-  showNoteForm(): void {
-    this.mode = 'create';
-    this.showForm = true;
-  }
-
-
-  ngOnInit(): void {
-    this.loadFolders();
-    this.loadNotes();
-  }
-
-  loadNotes(): void {
-    this.noteService.getNotes().subscribe({
-      next: (res) => {
-        this.notes = res;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Error al cargar notas:', err);
-        this.loading = false;
-      }
-    });
-  }
-
-  loadFolders(): void {
-    this.folderService.getFolders().subscribe({
-      next: (res) => {
-        this.folders = res;
-        res.forEach(folder => this.expandedFolders[folder.id] = true);
-        this.expandedFolders[0] = true;
-      },
-      error: (err) => {
-        console.error('Error al cargar carpetas:', err);
-      }
-    });
-  }
-
+  // Devuelve notas asociadas a una carpeta
   getNotesByFolder(folderId: number | null): Note[] {
     return this.notes.filter(note => note.folder_id === folderId);
   }
 
+  // Alterna el estado expandido de una carpeta
   toggleFolder(folderId: number): void {
     this.expandedFolders[folderId] = !this.expandedFolders[folderId];
   }
 
+  // Expande o colapsa todas las carpetas a la vez
   toggleAll(): void {
     this.allExpanded = !this.allExpanded;
     Object.keys(this.expandedFolders).forEach(id => {
@@ -150,6 +159,7 @@ export class NotesComponent implements OnInit {
     });
   }
 
+  // Devuelve un color aleatorio en escala de grises
   getRandomColor(id: number): string {
     const grays = [
       '#111111', '#222222', '#333333', '#444444',
@@ -159,5 +169,4 @@ export class NotesComponent implements OnInit {
     ];
     return grays[id % grays.length];
   }
-
 }

@@ -3,7 +3,9 @@
         {{ mode === 'create' ? 'Crear nueva nota' : mode === 'edit' ? 'Editar nota' : 'Ver nota' }}
     </h3>
 
+    <!-- Estructura del formulario en dos columnas -->
     <div class="form-grid">
+        <!-- Columna izquierda -->
         <div class="form-column">
             <label for="title">Título</label>
             <input id="title" type="text" [(ngModel)]="formNote.title" [readonly]="mode === 'view'"
@@ -16,16 +18,30 @@
             </select>
         </div>
 
+        <!-- Columna derecha -->
         <div class="form-column">
             <label for="content">Contenido</label>
-            <textarea id="content" [(ngModel)]="formNote.content" [readonly]="mode === 'view'"
-                placeholder="Contenido"></textarea>
+            <textarea id="content" [(ngModel)]="formNote.content" [readonly]="mode === 'view'" placeholder="Contenido">
+      </textarea>
         </div>
     </div>
 
+    <!-- Botones de acción -->
     <div class="form-buttons">
-        <button *ngIf="mode === 'create'" (click)="onSave()">Guardar</button>
-        <button *ngIf="mode === 'edit'" (click)="onSave()">Actualizar</button>
-        <button (click)="onCancel()">{{ mode === 'view' ? 'Volver' : 'Cancelar' }}</button>
+        <!-- Botón Guardar (crear) -->
+        <button *ngIf="mode === 'create'" (click)="onSave()"
+            [disabled]="!formNote.title?.trim() || !formNote.content?.trim()">
+            Guardar
+        </button>
+
+        <button *ngIf="mode === 'edit'" (click)="onSave()"
+            [disabled]="!formNote.title?.trim() || !formNote.content?.trim()">
+            Actualizar
+        </button>
+
+        <!-- Botón Cancelar / Volver -->
+        <button (click)="onCancel()">
+            {{ mode === 'view' ? 'Volver' : 'Cancelar' }}
+        </button>
     </div>
 </div>

@@ -17,9 +17,9 @@ export class PasswordsComponent implements OnInit {
   loading = true;
 
   expandedFolders: Record<number, boolean> = {};
-  allExpanded: boolean = true;
+  allExpanded = true;
 
-  showForm: boolean = false;
+  showForm = false;
   mode: 'create' | 'edit' | 'view' = 'create';
   formPassword: Partial<Password> = {
     title: '', username: '', password: '',
@@ -37,38 +37,43 @@ export class PasswordsComponent implements OnInit {
     this.loadPasswords();
   }
 
+  // Carga todas las carpetas del usuario
+  loadFolders(): void {
+    this.folderService.getFolders().subscribe({
+      next: (res) => {
+        this.folders = res;
+        res.forEach(folder => this.expandedFolders[folder.id] = true);
+        this.expandedFolders[0] = true; // Sin carpeta
+      },
+      error: (err) => console.error('Error al cargar carpetas:', err)
+    });
+  }
+
+  // Carga todas las contraseñas del usuario
   loadPasswords(): void {
     this.passwordService.getPasswords().subscribe({
-      next: res => {
+      next: (res) => {
         this.passwords = res;
         this.loading = false;
       },
-      error: err => {
+      error: (err) => {
         console.error('Error al cargar contraseñas:', err);
         this.loading = false;
       }
     });
   }
 
-  loadFolders(): void {
-    this.folderService.getFolders().subscribe({
-      next: (res) => {
-        this.folders = res;
-        res.forEach(folder => this.expandedFolders[folder.id] = true);
-        this.expandedFolders[0] = true;
-      },
-      error: (err) => console.error('Error al cargar carpetas:', err)
-    });
-  }
-
+  // Filtra las contraseñas por ID de carpeta
   getPasswordsByFolder(folderId: number | null): Password[] {
     return this.passwords.filter(p => p.folder_id === folderId);
   }
 
+  // Alterna el estado expandido/colapsado de una carpeta
   toggleFolder(folderId: number): void {
     this.expandedFolders[folderId] = !this.expandedFolders[folderId];
   }
 
+  // Expande o colapsa todas las carpetas
   toggleAll(): void {
     this.allExpanded = !this.allExpanded;
     Object.keys(this.expandedFolders).forEach(id => {
@@ -76,34 +81,43 @@ export class PasswordsComponent implements OnInit {
     });
   }
 
+  // Asigna color gris en base al ID
   getRandomGray(id: number): string {
     const grays = ['#111111', '#222222', '#333333', '#444444', '#555555', '#666666', '#777777', '#888888', '#999999'];
     return grays[id % grays.length];
   }
 
+  // Muestra el formulario para crear nueva contraseña
+  showPasswordForm(): void {
+    this.mode = 'create';
+    this.showForm = true;
+  }
+
+  // Guarda o actualiza una contraseña
   savePassword(): void {
     if (!this.formPassword.password?.trim()) return;
 
     if (this.mode === 'edit' && this.currentPassword) {
       this.passwordService.updatePassword(this.currentPassword.id, this.formPassword).subscribe({
-        next: updated => {
+        next: (updated) => {
           const idx = this.passwords.findIndex(p => p.id === updated.id);
           if (idx > -1) this.passwords[idx] = updated;
           this.resetForm();
         },
-        error: err => console.error('Error al actualizar contraseña:', err)
+        error: (err) => console.error('Error al actualizar contraseña:', err)
       });
     } else {
       this.passwordService.createPassword(this.formPassword).subscribe({
-        next: created => {
+        next: (created) => {
           this.passwords.push(created);
           this.resetForm();
         },
-        error: err => console.error('Error al crear contraseña:', err)
+        error: (err) => console.error('Error al crear contraseña:', err)
       });
     }
   }
 
+  // Elimina una contraseña
   deletePassword(passwordId: number): void {
     const confirmDelete = confirm('¿Estás seguro de que deseas eliminar esta contraseña?');
     if (!confirmDelete) return;
@@ -120,6 +134,7 @@ export class PasswordsComponent implements OnInit {
     });
   }
 
+  // Visualiza una contraseña (modo solo lectura)
   viewPassword(password: Password): void {
     this.passwordService.getPassword(password.id).subscribe({
       next: (fetched) => {
@@ -135,6 +150,7 @@ export class PasswordsComponent implements OnInit {
     });
   }
 
+  // Prepara el formulario para editar una contraseña
   editPassword(password: Password): void {
     this.mode = 'edit';
     this.currentPassword = password;
@@ -142,6 +158,7 @@ export class PasswordsComponent implements OnInit {
     this.showForm = true;
   }
 
+  // Reinicia el formulario y oculta
   resetForm(): void {
     this.mode = 'create';
     this.formPassword = {
@@ -150,10 +167,5 @@ export class PasswordsComponent implements OnInit {
     };
     this.currentPassword = null;
     this.showForm = false;
-  }
-
-  showPasswordForm(): void {
-    this.mode = 'create';
-    this.showForm = true;
   }
 }

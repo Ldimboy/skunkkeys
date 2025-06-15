@@ -10,15 +10,21 @@ import { AuthService } from '../../services/auth.service';
 })
 
 export class SidebarComponent {
+  // Estado para contraer o expandir la barra lateral
   isCollapsed = false;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
-  toggleSidebar() {
+  // Alternar entre sidebar colapsado y expandido
+  toggleSidebar(): void {
     this.isCollapsed = !this.isCollapsed;
   }
 
-  logout() {
+  // Cerrar sesión y redirigir al login
+  logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
   }

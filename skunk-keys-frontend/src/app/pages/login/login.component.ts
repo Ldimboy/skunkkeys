@@ -8,32 +8,50 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
+
 export class LoginComponent implements OnInit {
+
+  // Campos del formulario
   username: string = '';
   password: string = '';
   showPassword: boolean = false;
+
+  // Mensaje de error o advertencia
   errorMessage: string = '';
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit(): void {
+    // Muestra mensajes personalizados si se llega al login con ?reason=...
     this.route.queryParams.subscribe(params => {
-      if (params['reason'] === 'frozen') {
+      const reason = params['reason'];
+
+      if (reason === 'frozen') {
         this.errorMessage = 'Tu cuenta ha sido congelada. Contacta con el administrador.';
-      } else if (params['reason'] === 'expired') {
+      } else if (reason === 'expired') {
         this.errorMessage = 'Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.';
+      } else if (reason === 'denied') {
+        this.errorMessage = 'Acceso denegado. No tienes permisos para entrar a esta sección.';
       }
     });
   }
 
+  /**
+   * Alterna la visibilidad de la contraseña.
+   */
   togglePassword(): void {
     this.showPassword = !this.showPassword;
   }
 
+  /**
+   * Envía el formulario de login.
+   * Si la autenticación es correcta → redirige al dashboard.
+   * Si falla → muestra mensaje de error.
+   */
   login(): void {
     this.errorMessage = '';
 

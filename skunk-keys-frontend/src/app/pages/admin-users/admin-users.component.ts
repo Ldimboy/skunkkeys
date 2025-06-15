@@ -3,6 +3,7 @@ import { AdminService } from '../../services/admin.service';
 import { debounceTime, Subject } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-users',
@@ -21,21 +22,38 @@ export class AdminUsersComponent implements OnInit {
 
   constructor(
     private adminService: AdminService,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+    // Obtener usuario actual
     const currentUser = this.authService.getCurrentUser();
-    this.currentUserId = Number(currentUser?.sub); // el ID del usuario actual
 
+    // Si no es admin, lo echamos
+    if (!currentUser?.is_admin) {
+      this.authService.logout();
+      this.router.navigate(['/login'], {
+        queryParams: { reason: 'denied' }
+      });
+      return;
+    }
+
+    // Guardar ID del usuario actual
+    this.currentUserId = Number(currentUser?.sub);
+
+    // Cargar usuarios al iniciar
     this.loadUsers();
 
+    // Activar búsqueda reactiva con debounce
     this.searchSubject.pipe(debounceTime(300)).subscribe(() => {
       this.currentPage = 1;
       this.loadUsers();
     });
   }
 
+
+  // Carga los usuarios del backend con filtros de búsqueda y paginación
   loadUsers(): void {
     this.adminService.getUsers(this.currentPage, this.searchText).subscribe(res => {
       this.users = res.data;
@@ -44,25 +62,28 @@ export class AdminUsersComponent implements OnInit {
     });
   }
 
+  // Ejecuta la búsqueda tras un cambio en el input
   onSearchChange(): void {
     this.searchSubject.next(this.searchText);
   }
 
+  // Cambia el rol (admin ↔ usuario) del usuario indicado
   toggleRole(userId: number): void {
     this.adminService.toggleRole(userId).subscribe(() => {
       this.loadUsers();
     });
   }
 
+  // Activa o congela la cuenta del usuario
   toggleActive(userId: number): void {
     this.adminService.toggleActive(userId).subscribe(() => {
       this.loadUsers();
     });
   }
 
+  // Resetea la contraseña de un usuario mediante prompt
   resetPassword(userId: number): void {
     const newPassword = prompt('Introduce nueva contraseña (mínimo 8 caracteres, una mayúscula, un número y un símbolo):');
-
     if (!newPassword) return;
 
     this.adminService.resetPassword(userId, newPassword).subscribe({
@@ -71,6 +92,7 @@ export class AdminUsersComponent implements OnInit {
     });
   }
 
+  // Elimina un usuario tras confirmación
   deleteUser(userId: number): void {
     if (confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
       this.adminService.deleteUser(userId).subscribe(() => {
@@ -79,6 +101,7 @@ export class AdminUsersComponent implements OnInit {
     }
   }
 
+  // Navega a la siguiente página de usuarios
   nextPage(): void {
     if (this.currentPage < this.lastPage) {
       this.currentPage++;
@@ -86,6 +109,7 @@ export class AdminUsersComponent implements OnInit {
     }
   }
 
+  // Navega a la página anterior
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;

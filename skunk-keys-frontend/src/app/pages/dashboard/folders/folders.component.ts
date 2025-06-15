@@ -8,13 +8,14 @@ import { Folder } from '../../../models/folder.model';
   templateUrl: './folders.component.html',
   styleUrls: ['../../../shared/styles/section-layout.css']
 })
-export class FoldersComponent implements OnInit {
-  folders: Folder[] = [];
-  loading = true;
 
-  mode: 'create' | 'edit' | 'view' = 'create';
-  formFolder: Partial<Folder> = { title: '' };
-  currentFolder: Folder | null = null;
+export class FoldersComponent implements OnInit {
+  folders: Folder[] = [];               // Lista de carpetas
+  loading = true;                      // Indicador de carga
+
+  mode: 'create' | 'edit' | 'view' = 'create';  // Modo actual del formulario
+  formFolder: Partial<Folder> = { title: '' };  // Datos del formulario
+  currentFolder: Folder | null = null;          // Carpeta seleccionada actual
 
   constructor(private folderService: FolderService) { }
 
@@ -22,6 +23,9 @@ export class FoldersComponent implements OnInit {
     this.loadFolders();
   }
 
+  /**
+   * Cargar todas las carpetas del backend.
+   */
   loadFolders(): void {
     this.folderService.getFolders().subscribe({
       next: (res) => {
@@ -35,10 +39,14 @@ export class FoldersComponent implements OnInit {
     });
   }
 
+  /**
+   * Guardar una nueva carpeta o actualizar una existente.
+   */
   saveFolder(): void {
     if (!this.formFolder.title?.trim()) return;
 
     if (this.mode === 'edit' && this.currentFolder) {
+      // Actualizar carpeta existente
       this.folderService.updateFolder(this.currentFolder.id, this.formFolder).subscribe({
         next: updated => {
           const idx = this.folders.findIndex(f => f.id === updated.id);
@@ -48,6 +56,7 @@ export class FoldersComponent implements OnInit {
         error: err => console.error('Error al actualizar carpeta:', err)
       });
     } else {
+      // Crear nueva carpeta
       this.folderService.createFolder(this.formFolder).subscribe({
         next: created => {
           this.folders.push(created);
@@ -58,6 +67,7 @@ export class FoldersComponent implements OnInit {
     }
   }
 
+  
   deleteFolder(id: number): void {
     const confirmDelete = confirm('¿Eliminar esta carpeta? Las notas o contraseñas seguirán existiendo.');
     if (!confirmDelete) return;
@@ -71,24 +81,29 @@ export class FoldersComponent implements OnInit {
     });
   }
 
+  // Modo modo lectura.
+   
   viewFolder(folder: Folder): void {
     this.mode = 'view';
     this.currentFolder = folder;
     this.formFolder = { ...folder };
   }
 
+  // entra en modo Editar una carpeta existente.
   editFolder(folder: Folder): void {
     this.mode = 'edit';
     this.currentFolder = folder;
     this.formFolder = { ...folder };
   }
 
+  //Limpiar el formulario y volver al modo crear.
   resetForm(): void {
     this.mode = 'create';
     this.formFolder = { title: '' };
     this.currentFolder = null;
   }
 
+  // Randomizar color de las tarjetas
   getRandomGray(id: number): string {
     const grays = [
       '#111111', '#222222', '#333333', '#444444',

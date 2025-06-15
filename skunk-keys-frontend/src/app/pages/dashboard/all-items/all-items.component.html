@@ -1,28 +1,54 @@
 <h2 class="section-title">Todos tus elementos</h2>
 
-<!-- Formulario dinámico superior -->
-<div *ngIf="selectedNote || selectedPassword" class="dynamic-form">
+<!-- Vista previa de elemento seleccionado -->
+<div *ngIf="selectedNote || selectedPassword" class="note-form">
     <h3>Vista previa de {{ selectedType === 'note' ? 'nota' : 'contraseña' }}</h3>
 
-    <!-- Vista de Nota -->
-    <div *ngIf="selectedNote">
-        <p><strong>Título:</strong> {{ selectedNote.title }}</p>
-        <p><strong>Contenido:</strong></p>
-        <pre>{{ selectedNote.content }}</pre>
+    <div class="form-grid">
+        <!-- Columna izquierda -->
+        <div class="left-column">
+            <label>Título</label>
+            <input type="text" [value]="selectedNote?.title || selectedPassword?.title" readonly />
+
+            <ng-container *ngIf="selectedPassword">
+                <label>Usuario</label>
+                <input type="text" [value]="selectedPassword.username" readonly />
+
+                <label>Contraseña</label>
+                <input type="text" [value]="selectedPassword.password" readonly />
+
+                <label>Carpeta</label>
+                <input type="text" value="(Sin carpeta)" readonly />
+            </ng-container>
+
+            <ng-container *ngIf="selectedNote && !selectedPassword">
+                <label>Carpeta</label>
+                <input type="text" value="(Sin carpeta)" readonly />
+            </ng-container>
+        </div>
+
+        <!-- Columna derecha -->
+        <div class="right-column">
+            <ng-container *ngIf="selectedPassword">
+                <label>URL</label>
+                <input type="text" [value]="selectedPassword.url" readonly />
+
+                <label>Notas</label>
+                <textarea [value]="selectedPassword.notes" readonly></textarea>
+            </ng-container>
+
+            <ng-container *ngIf="selectedNote && !selectedPassword">
+                <label>Contenido</label>
+                <textarea [value]="selectedNote.content" readonly></textarea>
+            </ng-container>
+        </div>
     </div>
 
-    <!-- Vista de Contraseña -->
-    <div *ngIf="selectedPassword">
-        <p><strong>Título:</strong> {{ selectedPassword.title }}</p>
-        <p><strong>Usuario:</strong> {{ selectedPassword.username }}</p>
-        <p><strong>Contraseña:</strong> {{ selectedPassword.password }}</p>
-        <p><strong>URL:</strong> {{ selectedPassword.url }}</p>
-        <p><strong>Notas:</strong></p>
-        <pre>{{ selectedPassword.notes }}</pre>
+    <div class="form-buttons">
+        <button (click)="clearSelection()">Volver</button>
     </div>
-
-    <button (click)="clearSelection()">Cerrar</button>
 </div>
+
 
 <!-- Botón global de expandir/colapsar -->
 <button class="toggle-btn" (click)="toggleAll()">
