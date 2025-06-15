@@ -6,7 +6,7 @@ import { Folder } from '../../../models/folder.model';
   selector: 'app-folders',
   standalone: false,
   templateUrl: './folders.component.html',
-  styleUrl: './folders.component.css'
+  styleUrls: ['../../../shared/styles/section-layout.css']
 })
 export class FoldersComponent implements OnInit {
   folders: Folder[] = [];

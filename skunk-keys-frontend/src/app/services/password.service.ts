@@ -5,29 +5,35 @@ import { Observable, map } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class PasswordService {
-    private apiUrl = 'http://localhost:8000/api/passwords';
+  private apiUrl = 'http://localhost:8000/api/passwords';
 
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-    getPasswords(): Observable<Password[]> {
-        return this.http.get<{ passwords: Password[] }>(this.apiUrl).pipe(
-            map(res => res.passwords)
-        );
-    }
+  getPassword(id: number): Observable<Password> {
+    return this.http.get<{ password: Password }>(`${this.apiUrl}/${id}`).pipe(
+      map(res => res.password)
+    );
+  }
 
-    createPassword(password: Partial<Password>): Observable<Password> {
-        return this.http.post<{ password: Password }>(this.apiUrl, password).pipe(
-            map(res => res.password)
-        );
-    }
+  getPasswords(): Observable<Password[]> {
+    return this.http.get<{ passwords: Password[] }>(this.apiUrl).pipe(
+      map(res => res.passwords)
+    );
+  }
 
-    updatePassword(id: number, password: Partial<Password>): Observable<Password> {
-        return this.http.put<{ password: Password }>(`${this.apiUrl}/${id}`, password).pipe(
-            map(res => res.password)
-        );
-    }
+  createPassword(password: Partial<Password>): Observable<Password> {
+    return this.http.post<{ password: Password }>(this.apiUrl, password).pipe(
+      map(res => res.password)
+    );
+  }
 
-    deletePassword(id: number): Observable<void> {
-        return this.http.delete<void>(`${this.apiUrl}/${id}`);
-    }
+  updatePassword(id: number, password: Partial<Password>): Observable<Password> {
+    return this.http.put<{ password: Password }>(`${this.apiUrl}/${id}`, password).pipe(
+      map(res => res.password)
+    );
+  }
+
+  deletePassword(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

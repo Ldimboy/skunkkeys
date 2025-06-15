@@ -1,5 +1,6 @@
 <header class="topbar">
-    <div class="logo">🔐 Skunk Keys</div>
+   
+    <div class="logo">  <img class="logo-img" src="/favicon.png" alt="Skunk Keys Logo" />Skunk Keys</div>
 
     <div class="profile-wrapper">
         <button class="profile-btn" (click)="toggleDropdown()">
@@ -9,7 +10,10 @@
 
         <ul class="dropdown-menu" [class.show]="dropdownOpen">
             <li (click)="goToProfile()">Perfil</li>
-            <li *ngIf="isAdmin" (click)="goToAdminPanel()">Modo administrador</li>
+            <li *ngIf="isAdmin" (click)="goToAdminPanel()">
+                {{ isInAdminMode ? 'Volver al modo usuario' : 'Modo administrador' }}
+            </li>
+
             <li (click)="logout()">Cerrar sesión</li>
         </ul>
     </div>

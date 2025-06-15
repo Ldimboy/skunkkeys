@@ -10,7 +10,8 @@ import { FolderService } from '../../../services/folder.service';
   selector: 'app-all-items',
   standalone: false,
   templateUrl: './all-items.component.html',
-  styleUrl: './all-items.component.css'
+  styleUrls: ['../../../shared/styles/section-layout.css']
+
 })
 export class AllItemsComponent implements OnInit {
   folders: Folder[] = [];
@@ -46,6 +47,7 @@ export class AllItemsComponent implements OnInit {
     this.folderService.getFolders().subscribe({
       next: res => {
         this.folders = res;
+        this.expandedFolders[0] = true; // ← Asegura que "Sin carpeta" también esté expandido por defecto
         res.forEach(folder => this.expandedFolders[folder.id] = true);
       }
     });
@@ -74,18 +76,40 @@ export class AllItemsComponent implements OnInit {
     });
   }
 
-  getNotesByFolder(folderId: number): Note[] {
+  getNotesByFolder(folderId: number | null): Note[] {
     return this.notes.filter(n => n.folder_id === folderId);
   }
 
-  getPasswordsByFolder(folderId: number): Password[] {
+  getPasswordsByFolder(folderId: number | null): Password[] {
     return this.passwords.filter(p => p.folder_id === folderId);
   }
 
   viewItem(type: 'note' | 'password', item: Note | Password): void {
-    this.selectedType = type;
-    this.selectedItem = item;
+    if (type === 'note') {
+      this.noteService.getNote(item.id).subscribe({
+        next: (fetched) => {
+          this.selectedType = 'note';
+          this.selectedItem = fetched;
+        },
+        error: (err) => {
+          console.error('Error al obtener la nota:', err);
+          throw err; // Permite que el interceptor lo capture
+        }
+      });
+    } else {
+      this.passwordService.getPassword(item.id).subscribe({
+        next: (fetched) => {
+          this.selectedType = 'password';
+          this.selectedItem = fetched;
+        },
+        error: (err) => {
+          console.error('Error al obtener la contraseña:', err);
+          throw err; // Igual que arriba
+        }
+      });
+    }
   }
+
 
   clearSelection(): void {
     this.selectedType = null;

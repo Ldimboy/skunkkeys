@@ -22,10 +22,11 @@ import { NotesComponent } from './pages/dashboard/notes/notes.component';
 import { ProfileSettingsComponent } from './pages/dashboard/profile-settings/profile-settings.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { ItemCardComponent } from './components/item-card/item-card.component';
 import { NoteFormComponent } from './shared/forms/note-form/note-form.component';
 import { PasswordFormComponent } from './shared/forms/password-form/password-form.component';
 import { FoldersComponent } from './pages/dashboard/folders/folders.component';
+import { AdminUsersComponent } from './pages/admin-users/admin-users.component';
+import { AdminLayoutComponent } from './pages/admin-layout/admin-layout.component';
 
 
 
@@ -45,10 +46,11 @@ import { FoldersComponent } from './pages/dashboard/folders/folders.component';
     ProfileSettingsComponent,
     TopbarComponent,
     SidebarComponent,
-    ItemCardComponent,
     NoteFormComponent,
     PasswordFormComponent,
     FoldersComponent,
+    AdminUsersComponent,
+    AdminLayoutComponent,
   ],
   imports: [
     BrowserModule,

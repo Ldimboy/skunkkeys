@@ -6,7 +6,7 @@ import { Password } from '../../../models/password.model';
   selector: 'app-password-form',
   standalone: false,
   templateUrl: './password-form.component.html',
-  styleUrl: './password-form.component.css'
+  styleUrls: ['../../styles/form-layout.css']
 })
 export class PasswordFormComponent {
   @Input() mode: 'create' | 'edit' | 'view' = 'create';

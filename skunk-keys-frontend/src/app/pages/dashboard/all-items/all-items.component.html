@@ -1,4 +1,4 @@
-<h2>Todos tus elementos</h2>
+<h2 class="section-title">Todos tus elementos</h2>
 
 <!-- Formulario dinámico superior -->
 <div *ngIf="selectedNote || selectedPassword" class="dynamic-form">
@@ -24,31 +24,74 @@
     <button (click)="clearSelection()">Cerrar</button>
 </div>
 
-
 <!-- Botón global de expandir/colapsar -->
-<button (click)="toggleAll()">
-    <i [ngClass]="allExpanded ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'"></i>
+<button class="toggle-btn" (click)="toggleAll()">
+    <i [ngClass]="allExpanded ? 'fa fa-ellipsis-h' : 'fa fa-ellipsis-v'"></i>
 </button>
+
+<!-- Elementos sin carpeta -->
+<div>
+    <div class="folder-header" (click)="toggleFolder(0)">
+        <h3 class="section-title">
+            Sin carpeta
+            <i class="toggle-icon" [ngClass]="expandedFolders[0] ? 'fa fa-chevron-down' : 'fa fa-chevron-right'"></i>
+        </h3>
+    </div>
+
+    <div class="item-grid" *ngIf="expandedFolders[0]">
+        <!-- Notas sin carpeta -->
+        <div class="item-card" *ngFor="let note of getNotesByFolder(null)">
+            <div class="item-header" [ngStyle]="{ 'background-color': getRandomColor(note.id) }">
+                <i class="fa fa-sticky-note"></i>
+            </div>
+            <div class="item-body">
+                <strong>{{ note.title }}</strong>
+                <div class="item-actions">
+                    <button (click)="viewItem('note', note)" title="Seleccionar">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contraseñas sin carpeta -->
+        <div class="item-card" *ngFor="let password of getPasswordsByFolder(null)">
+            <div class="item-header" [ngStyle]="{ 'background-color': getRandomColor(password.id) }">
+                <i class="fa fa-key"></i>
+            </div>
+            <div class="item-body">
+                <strong>{{ password.title || '(Sin título)' }}</strong>
+                <div class="item-actions">
+                    <button (click)="viewItem('password', password)" title="Seleccionar">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- Secciones por carpeta -->
 <div *ngFor="let folder of folders">
     <div class="folder-header" (click)="toggleFolder(folder.id)">
-        <h3>{{ folder.title }}</h3>
-        <span class="toggle-indicator">
-            <i [ngClass]="expandedFolders[folder.id] ? 'fa fa-chevron-down' : 'fa fa-chevron-right'"></i>
-        </span>
+        <h3 class="section-title">
+            {{ folder.title }}
+            <i class="toggle-icon"
+                [ngClass]="expandedFolders[folder.id] ? 'fa fa-chevron-down' : 'fa fa-chevron-right'"></i>
+        </h3>
     </div>
 
-    <div class="note-grid" *ngIf="expandedFolders[folder.id]">
+    <div class="item-grid" *ngIf="expandedFolders[folder.id]">
         <!-- Tarjetas de Notas -->
-        <div class="note-card" *ngFor="let note of getNotesByFolder(folder.id)">
-            <div class="note-header" [ngStyle]="{ 'background-color': getRandomColor(note.id) }">
+        <div class="item-card" *ngFor="let note of getNotesByFolder(folder.id)">
+            <div class="item-header" [ngStyle]="{ 'background-color': getRandomColor(note.id) }">
                 <i class="fa fa-sticky-note"></i>
             </div>
 
-            <div class="note-body">
+            <div class="item-body">
                 <strong>{{ note.title }}</strong>
-                <div class="note-actions">
+                <div class="item-actions">
                     <button (click)="viewItem('note', note)" title="Seleccionar">
                         <i class="fa fa-eye"></i>
                     </button>
@@ -57,14 +100,14 @@
         </div>
 
         <!-- Tarjetas de Contraseñas -->
-        <div class="note-card" *ngFor="let password of getPasswordsByFolder(folder.id)">
-            <div class="note-header" [ngStyle]="{ 'background-color': getRandomColor(password.id) }">
+        <div class="item-card" *ngFor="let password of getPasswordsByFolder(folder.id)">
+            <div class="item-header" [ngStyle]="{ 'background-color': getRandomColor(password.id) }">
                 <i class="fa fa-key"></i>
             </div>
 
-            <div class="note-body">
+            <div class="item-body">
                 <strong>{{ password.title || '(Sin título)' }}</strong>
-                <div class="note-actions">
+                <div class="item-actions">
                     <button (click)="viewItem('password', password)" title="Seleccionar">
                         <i class="fa fa-eye"></i>
                     </button>

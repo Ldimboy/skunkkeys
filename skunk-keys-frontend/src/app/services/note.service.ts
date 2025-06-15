@@ -9,6 +9,13 @@ export class NoteService {
 
     constructor(private http: HttpClient) { }
 
+    getNote(id: number): Observable<Note> {
+        return this.http.get<{ note: Note }>(`${this.apiUrl}/${id}`).pipe(
+            map(res => res.note)
+        );
+    }
+
+
     getNotes(): Observable<Note[]> {
         return this.http.get<{ notes: Note[] }>(this.apiUrl).pipe(
             map(res => res.notes)

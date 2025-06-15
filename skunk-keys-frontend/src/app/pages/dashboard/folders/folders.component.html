@@ -1,4 +1,6 @@
-<h2>Gestión de Carpetas</h2>
+<div class="section-header">
+    <h2 class="section-title">Gestión de Carpetas</h2>
+</div>
 
 <!-- Formulario dinámico -->
 <div class="note-form">
@@ -26,15 +28,15 @@
 <!-- Listado de carpetas -->
 <div *ngIf="loading">Cargando carpetas...</div>
 
-<div class="note-grid" *ngIf="!loading">
-    <div class="note-card" *ngFor="let folder of folders">
-        <div class="note-header" [ngStyle]="{ 'background-color': getRandomGray(folder.id) }">
+<div class="item-grid" *ngIf="!loading">
+    <div class="item-card" *ngFor="let folder of folders">
+        <div class="item-header" [ngStyle]="{ 'background-color': getRandomGray(folder.id) }">
             <i class="fa fa-folder"></i>
         </div>
 
-        <div class="note-body">
+        <div class="item-body">
             <strong>{{ folder.title }}</strong>
-            <div class="note-actions">
+            <div class="item-actions">
                 <button (click)="viewFolder(folder)" title="Ver"><i class="fa fa-eye"></i></button>
                 <button (click)="editFolder(folder)" title="Editar"><i class="fa fa-edit"></i></button>
                 <button (click)="deleteFolder(folder.id)" title="Eliminar"><i class="fa fa-trash"></i></button>

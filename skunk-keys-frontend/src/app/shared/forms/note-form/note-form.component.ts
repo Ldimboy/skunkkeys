@@ -6,7 +6,7 @@ import { Folder } from '../../../models/folder.model';
   selector: 'app-note-form',
   standalone: false,
   templateUrl: './note-form.component.html',
-  styleUrl: './note-form.component.css'
+  styleUrls: ['../../styles/form-layout.css']
 })
 
 export class NoteFormComponent {

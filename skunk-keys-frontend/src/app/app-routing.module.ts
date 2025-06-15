@@ -16,6 +16,9 @@ import { ProfileSettingsComponent } from './pages/dashboard/profile-settings/pro
 import { AuthGuard } from './guards/auth.guard';
 import { FoldersComponent } from './pages/dashboard/folders/folders.component';
 
+import { AdminUsersComponent } from './pages/admin-users/admin-users.component';
+import { AdminLayoutComponent } from './pages/admin-layout/admin-layout.component';
+
 const routes: Routes = [
   { path: '', component: LandingHomeComponent },
   { path: 'login', component: LoginComponent },
@@ -38,7 +41,17 @@ const routes: Routes = [
       { path: 'notes', component: NotesComponent },
       { path: 'profile', component: ProfileSettingsComponent },
     ]
+  },
+
+  {
+    path: 'admin',
+    component: AdminLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      { path: '', component: AdminUsersComponent }
+    ]
   }
+
 
 ];
 

@@ -60,12 +60,15 @@ export class AuthService {
     if (!token) return null;
 
     try {
-      return jwtDecode<JwtPayload>(token);
+      const payload = jwtDecode<JwtPayload>(token);
+      console.log('🧩 Token decodificado:', payload); // 👈 AÑADE ESTO
+      return payload;
     } catch (err) {
       console.error('Error al decodificar el token', err);
       return null;
     }
   }
+
 
   // Forgot password
   resetPasswordRequest(data: { email: string }): Observable<any> {

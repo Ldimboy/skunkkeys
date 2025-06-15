@@ -8,7 +8,7 @@ import { Folder } from '../../../models/folder.model';
   selector: 'app-notes',
   standalone: false,
   templateUrl: './notes.component.html',
-  styleUrl: './notes.component.css'
+  styleUrls: ['../../../shared/styles/section-layout.css']
 })
 export class NotesComponent implements OnInit {
   notes: Note[] = [];
@@ -18,6 +18,8 @@ export class NotesComponent implements OnInit {
   expandedFolders: Record<number, boolean> = {};
   allExpanded: boolean = true;
 
+
+  showForm: boolean = false;
   mode: 'create' | 'edit' | 'view' = 'create';
   formNote: Partial<Note> = { title: '', content: '', folder_id: null };
   currentNote: Note | null = null;
@@ -57,28 +59,48 @@ export class NotesComponent implements OnInit {
     this.noteService.deleteNote(noteId).subscribe({
       next: () => {
         this.notes = this.notes.filter(n => n.id !== noteId);
-        // Si la nota eliminada era la que se estaba editando o viendo
         if (this.currentNote?.id === noteId) this.resetForm();
       },
-      error: (err) => console.error('Error al eliminar nota:', err)
+      error: (err) => {
+        console.error('Error al eliminar nota:', err);
+        throw err; // permite que el interceptor lo capture por si expira el token JWT
+      }
     });
   }
 
 
   viewNote(note: Note): void {
-    this.mode = 'view';
-    this.currentNote = note;
-    this.formNote = { ...note };
+    this.noteService.getNote(note.id).subscribe({
+      next: (fetched) => {
+        this.currentNote = fetched;
+        this.formNote = { ...fetched };
+        this.mode = 'view';
+        this.showForm = true;
+      },
+      error: (err) => {
+        console.error('Error al ver nota:', err);
+        throw err; // Esto permitirá al interceptor redirigir si el JWT ha expirado
+      }
+    });
   }
+
   editNote(note: Note): void {
     this.mode = 'edit';
     this.currentNote = note;
     this.formNote = { ...note };
+    this.showForm = true;
   }
+
   resetForm(): void {
     this.mode = 'create';
     this.formNote = { title: '', content: '', folder_id: null };
     this.currentNote = null;
+    this.showForm = false;
+  }
+
+  showNoteForm(): void {
+    this.mode = 'create';
+    this.showForm = true;
   }
 
 
@@ -104,8 +126,8 @@ export class NotesComponent implements OnInit {
     this.folderService.getFolders().subscribe({
       next: (res) => {
         this.folders = res;
-        // Inicializa todas como expandida al inicio
         res.forEach(folder => this.expandedFolders[folder.id] = true);
+        this.expandedFolders[0] = true;
       },
       error: (err) => {
         console.error('Error al cargar carpetas:', err);

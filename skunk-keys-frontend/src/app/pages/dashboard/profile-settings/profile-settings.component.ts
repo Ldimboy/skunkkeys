@@ -27,8 +27,4 @@ export class ProfileSettingsComponent implements OnInit {
     this.router.navigate(['/forgot-password']);
   }
 
-
-  goToAdminPanel(): void {
-    this.router.navigate(['/dashboard/admin']);
-  }
 }

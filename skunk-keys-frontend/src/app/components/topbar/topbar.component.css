@@ -13,6 +13,10 @@
   font-size: 1.2rem;
 }
 
+.welcome-text {
+  margin-left: 0.5rem;
+}
+
 .profile-wrapper {
   position: relative;
 }
@@ -24,6 +28,7 @@
   font-size: 1.8rem;
   cursor: pointer;
 }
+
 
 .dropdown-menu {
   position: absolute;
@@ -52,3 +57,36 @@
 .dropdown-menu li:hover {
   background-color: #f2f2f2;
 }
+
+.logo-img {
+    width: 40px;
+    height: auto;
+    margin-right: 0.5rem;
+    border-radius: 50%;
+    border: white solid 2px;
+}
+
+@media (max-width: 768px) {
+  .topbar {
+    flex-direction: row;
+    align-items: flex-start;
+    height: auto;
+    padding: 0.5rem 1rem;
+  }
+
+  .profile-btn {
+    font-size: 1.2rem;
+  }
+
+  .welcome-text {
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+  }
+
+  .dropdown-menu {
+    width: 100%;
+    right: auto;
+    left: 0;
+  }
+}
+

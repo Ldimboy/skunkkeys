@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 
 // Crud
 use App\Http\Controllers\FolderController;
@@ -49,11 +50,11 @@ Route::middleware('auth:api')->group(function () {
 // Rutas protegidas Login + Admin
 use App\Http\Controllers\UserController;
 
-Route::middleware(['auth:api', 'admin'])->group(function () {
-    Route::get('/users', [UserController::class, 'index']);
-    Route::get('/users/{id}', [UserController::class, 'show']);
-    Route::delete('/users/{id}', [UserController::class, 'destroy']);
-    Route::put('/users/{id}/toggle-role', [UserController::class, 'toggleAdmin']);
-    Route::put('/users/{id}/toggle-active', [UserController::class, 'toggleActive']);
-    Route::put('/users/{id}/reset-password', [UserController::class, 'resetPassword']);
+Route::middleware(['auth:api', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/users', [AdminController::class, 'listUsers']);
+    Route::get('/users/{id}', [AdminController::class, 'show']);
+    Route::delete('/users/{id}', [AdminController::class, 'destroy']);
+    Route::put('/users/{id}/toggle-role', [AdminController::class, 'toggleAdmin']);
+    Route::put('/users/{id}/toggle-active', [AdminController::class, 'toggleActive']);
+    Route::put('/users/{id}/reset-password', [AdminController::class, 'resetPassword']);
 });

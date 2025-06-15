@@ -1,10 +1,38 @@
-<nav class="sidebar">
-    <ul>
-        <li routerLink="/dashboard/all-items" routerLinkActive="active">Todos los elementos</li>
-        <li routerLink="/dashboard/passwords" routerLinkActive="active">Contraseñas</li>
-        <li routerLink="/dashboard/notes" routerLinkActive="active">Notas</li>
-        <li routerLink="/dashboard/folders" routerLinkActive="active">Carpetas</li>
-        <li routerLink="/dashboard/profile" routerLinkActive="active">Perfil</li>
-        <li (click)="logout()">Cerrar sesión</li>
-    </ul>
+<nav class="sidebar" [class.collapsed]="isCollapsed">
+  <div class="sidebar-header">
+    <span class="logo">
+      <i class="fa fa-lock"></i>
+      <span *ngIf="!isCollapsed">Contraer</span>
+    </span>
+    <button class="collapse-btn" (click)="toggleSidebar()">
+      <i class="fa" [ngClass]="isCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+    </button>
+  </div>
+
+  <ul>
+    <li routerLink="/dashboard/all-items" routerLinkActive="active">
+      <i class="fa fa-briefcase"></i>
+      <span *ngIf="!isCollapsed">Todos los elementos</span>
+    </li>
+    <li routerLink="/dashboard/passwords" routerLinkActive="active">
+      <i class="fa fa-key"></i>
+      <span *ngIf="!isCollapsed">Contraseñas</span>
+    </li>
+    <li routerLink="/dashboard/notes" routerLinkActive="active">
+      <i class="fa fa-sticky-note"></i>
+      <span *ngIf="!isCollapsed">Notas</span>
+    </li>
+    <li routerLink="/dashboard/folders" routerLinkActive="active">
+      <i class="fa fa-folder"></i>
+      <span *ngIf="!isCollapsed">Carpetas</span>
+    </li>
+    <li routerLink="/dashboard/profile" routerLinkActive="active">
+      <i class="fa fa-user"></i>
+      <span *ngIf="!isCollapsed">Perfil</span>
+    </li>
+    <li (click)="logout()">
+      <i class="fa fa-sign-out-alt"></i>
+      <span *ngIf="!isCollapsed">Cerrar sesión</span>
+    </li>
+  </ul>
 </nav>

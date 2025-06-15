@@ -32,8 +32,14 @@ export class JwtInterceptor implements HttpInterceptor {
           this.router.navigate(['/login'], { queryParams: { reason: 'frozen' } });
         }
 
+        if (err.status === 401) {
+          this.authService.logout();
+          this.router.navigate(['/login'], { queryParams: { reason: 'expired' } });
+        }
+
         return throwError(() => err);
       })
     );
+
   }
 }

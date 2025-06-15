@@ -24,6 +24,8 @@ export class LoginComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params['reason'] === 'frozen') {
         this.errorMessage = 'Tu cuenta ha sido congelada. Contacta con el administrador.';
+      } else if (params['reason'] === 'expired') {
+        this.errorMessage = 'Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.';
       }
     });
   }

@@ -1,15 +1,16 @@
-<h2>Tus notas</h2>
+<div class="section-header">
+  <h2 class="section-title">Tus notas</h2>
+  <button *ngIf="!showForm" class="add-item-btn" (click)="showNoteForm()" title="Añadir nota">
+    <i class="fa fa-plus"></i>
+  </button>
+</div>
 
-<app-note-form
-  [mode]="mode"
-  [formNote]="formNote"
-  [folders]="folders"
-  (save)="saveNote()"
-  (cancel)="resetForm()"
-></app-note-form>
+<app-note-form *ngIf="showForm" [mode]="mode" [formNote]="formNote" [folders]="folders" (save)="saveNote()"
+  (cancel)="resetForm()">
+</app-note-form>
 
-<button (click)="toggleAll()">
-  <i [ngClass]="allExpanded ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'"></i>
+<button class="toggle-btn" (click)="toggleAll()">
+  <i [ngClass]="allExpanded ? 'fa fa-ellipsis-h' : 'fa fa-ellipsis-v'"></i>
 </button>
 
 <div *ngIf="loading">Cargando notas...</div>
@@ -17,21 +18,20 @@
 <!-- Notas sin carpeta -->
 <div>
   <div class="folder-header" (click)="toggleFolder(0)">
-    <h3>Sin carpeta</h3>
-    <span class="toggle-indicator">
-      <i [ngClass]="expandedFolders[0] ? 'fa fa-chevron-down' : 'fa fa-chevron-right'"></i>
-    </span>
+    <h3>
+      Sin carpeta
+      <i class="toggle-icon" [ngClass]="expandedFolders[0] ? 'fa fa-chevron-down' : 'fa fa-chevron-right'"></i>
+    </h3>
   </div>
 
-  <div class="note-grid" *ngIf="expandedFolders[0]">
-    <div class="note-card" *ngFor="let note of getNotesByFolder(null)">
-      <div class="note-header" [ngStyle]="{ 'background-color': getRandomColor(note.id) }">
+  <div class="item-grid" *ngIf="expandedFolders[0]">
+    <div class="item-card" *ngFor="let note of getNotesByFolder(null)">
+      <div class="item-header" [ngStyle]="{ 'background-color': getRandomColor(note.id) }">
         <i class="fa fa-sticky-note"></i>
       </div>
-
-      <div class="note-body">
+      <div class="item-body">
         <strong>{{ note.title }}</strong>
-        <div class="note-actions">
+        <div class="item-actions">
           <button (click)="viewNote(note)" title="Ver"><i class="fa fa-eye"></i></button>
           <button (click)="editNote(note)" title="Editar"><i class="fa fa-edit"></i></button>
           <button (click)="deleteNote(note.id)" title="Eliminar"><i class="fa fa-trash"></i></button>
@@ -41,24 +41,23 @@
   </div>
 </div>
 
-<!-- Mostrar por carpetas -->
+<!-- Notas por carpeta -->
 <div *ngFor="let folder of folders">
   <div class="folder-header" (click)="toggleFolder(folder.id)">
-    <h3>{{ folder.title }}</h3>
-    <span class="toggle-indicator">
-      <i [ngClass]="expandedFolders[folder.id] ? 'fa fa-chevron-down' : 'fa fa-chevron-right'"></i>
-    </span>
+    <h3>
+      {{ folder.title }}
+      <i class="toggle-icon" [ngClass]="expandedFolders[folder.id] ? 'fa fa-chevron-down' : 'fa fa-chevron-right'"></i>
+    </h3>
   </div>
 
-  <div class="note-grid" *ngIf="expandedFolders[folder.id]">
-    <div class="note-card" *ngFor="let note of getNotesByFolder(folder.id)">
-      <div class="note-header" [ngStyle]="{ 'background-color': getRandomColor(note.id) }">
+  <div class="item-grid" *ngIf="expandedFolders[folder.id]">
+    <div class="item-card" *ngFor="let note of getNotesByFolder(folder.id)">
+      <div class="item-header" [ngStyle]="{ 'background-color': getRandomColor(note.id) }">
         <i class="fa fa-sticky-note"></i>
       </div>
-
-      <div class="note-body">
+      <div class="item-body">
         <strong>{{ note.title }}</strong>
-        <div class="note-actions">
+        <div class="item-actions">
           <button (click)="viewNote(note)" title="Ver"><i class="fa fa-eye"></i></button>
           <button (click)="editNote(note)" title="Editar"><i class="fa fa-edit"></i></button>
           <button (click)="deleteNote(note.id)" title="Eliminar"><i class="fa fa-trash"></i></button>

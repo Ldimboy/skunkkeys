@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-topbar',
@@ -8,11 +9,11 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './topbar.component.html',
   styleUrl: './topbar.component.css'
 })
-
 export class TopbarComponent implements OnInit {
   dropdownOpen = false;
   username = '';
   isAdmin = false;
+  isInAdminMode = false;
 
   constructor(private router: Router, private authService: AuthService) { }
 
@@ -20,6 +21,16 @@ export class TopbarComponent implements OnInit {
     const user = this.authService.getCurrentUser();
     this.username = user?.username || 'Usuario';
     this.isAdmin = user?.is_admin || false;
+
+    // Escuchar cambios de ruta
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        this.isInAdminMode = event.urlAfterRedirects.startsWith('/admin');
+      });
+
+    const currentUrl = this.router.url;
+    this.isInAdminMode = currentUrl.startsWith('/admin');
   }
 
   toggleDropdown() {
@@ -31,7 +42,11 @@ export class TopbarComponent implements OnInit {
   }
 
   goToAdminPanel() {
-    this.router.navigate(['/admin']);
+    if (this.isInAdminMode) {
+      this.router.navigate(['/dashboard']);
+    } else {
+      this.router.navigate(['/admin']);
+    }
   }
 
   logout() {

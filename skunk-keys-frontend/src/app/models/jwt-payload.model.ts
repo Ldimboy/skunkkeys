@@ -1,5 +1,6 @@
 export interface JwtPayload {
-  id: number;
+  sub?: string; // 👈 este es el campo que necesitas
+  id?: number;
   username: string;
   email: string;
   is_admin: boolean;

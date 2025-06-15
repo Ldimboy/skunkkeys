@@ -8,7 +8,7 @@ import { Folder } from '../../../models/folder.model';
   selector: 'app-passwords',
   standalone: false,
   templateUrl: './passwords.component.html',
-  styleUrl: './passwords.component.css'
+  styleUrls: ['../../../shared/styles/section-layout.css']
 })
 
 export class PasswordsComponent implements OnInit {
@@ -19,14 +19,11 @@ export class PasswordsComponent implements OnInit {
   expandedFolders: Record<number, boolean> = {};
   allExpanded: boolean = true;
 
+  showForm: boolean = false;
   mode: 'create' | 'edit' | 'view' = 'create';
   formPassword: Partial<Password> = {
-    title: '',
-    username: '',
-    password: '',
-    url: '',
-    notes: '',
-    folder_id: null
+    title: '', username: '', password: '',
+    url: '', notes: '', folder_id: null
   };
   currentPassword: Password | null = null;
 
@@ -40,16 +37,6 @@ export class PasswordsComponent implements OnInit {
     this.loadPasswords();
   }
 
-  loadFolders(): void {
-    this.folderService.getFolders().subscribe({
-      next: res => {
-        this.folders = res;
-        res.forEach(folder => this.expandedFolders[folder.id] = true);
-      },
-      error: err => console.error('Error al cargar carpetas:', err)
-    });
-  }
-
   loadPasswords(): void {
     this.passwordService.getPasswords().subscribe({
       next: res => {
@@ -60,6 +47,17 @@ export class PasswordsComponent implements OnInit {
         console.error('Error al cargar contraseñas:', err);
         this.loading = false;
       }
+    });
+  }
+
+  loadFolders(): void {
+    this.folderService.getFolders().subscribe({
+      next: (res) => {
+        this.folders = res;
+        res.forEach(folder => this.expandedFolders[folder.id] = true);
+        this.expandedFolders[0] = true;
+      },
+      error: (err) => console.error('Error al cargar carpetas:', err)
     });
   }
 
@@ -106,41 +104,56 @@ export class PasswordsComponent implements OnInit {
     }
   }
 
-  deletePassword(id: number): void {
-    const confirmDelete = confirm('¿Seguro que deseas eliminar esta contraseña?');
+  deletePassword(passwordId: number): void {
+    const confirmDelete = confirm('¿Estás seguro de que deseas eliminar esta contraseña?');
     if (!confirmDelete) return;
 
-    this.passwordService.deletePassword(id).subscribe({
+    this.passwordService.deletePassword(passwordId).subscribe({
       next: () => {
-        this.passwords = this.passwords.filter(p => p.id !== id);
-        if (this.currentPassword?.id === id) this.resetForm();
+        this.passwords = this.passwords.filter(p => p.id !== passwordId);
+        if (this.currentPassword?.id === passwordId) this.resetForm();
       },
-      error: err => console.error('Error al eliminar contraseña:', err)
+      error: (err) => {
+        console.error('Error al eliminar contraseña:', err);
+        throw err;
+      }
     });
   }
 
   viewPassword(password: Password): void {
-    this.mode = 'view';
-    this.currentPassword = password;
-    this.formPassword = { ...password };
+    this.passwordService.getPassword(password.id).subscribe({
+      next: (fetched) => {
+        this.currentPassword = fetched;
+        this.formPassword = { ...fetched };
+        this.mode = 'view';
+        this.showForm = true;
+      },
+      error: (err) => {
+        console.error('Error al ver contraseña:', err);
+        throw err;
+      }
+    });
   }
 
   editPassword(password: Password): void {
     this.mode = 'edit';
     this.currentPassword = password;
     this.formPassword = { ...password };
+    this.showForm = true;
   }
 
   resetForm(): void {
     this.mode = 'create';
     this.formPassword = {
-      title: '',
-      username: '',
-      password: '',
-      url: '',
-      notes: '',
-      folder_id: null
+      title: '', username: '', password: '',
+      url: '', notes: '', folder_id: null
     };
     this.currentPassword = null;
+    this.showForm = false;
+  }
+
+  showPasswordForm(): void {
+    this.mode = 'create';
+    this.showForm = true;
   }
 }

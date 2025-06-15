@@ -17,7 +17,15 @@ export class ResetPasswordComponent implements OnInit {
   errorMessage: string = '';
   successMessage: string = '';
 
+  showPassword: boolean = false;
+
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
+  }
+
   constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService) { }
+
+
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
